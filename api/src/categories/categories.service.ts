@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { PrismaService } from 'src/prisma/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma/prisma.service';
 import { randomUUID } from 'node:crypto';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class CategoriesService {
     });
   }
 
-  remove(id) {
+  remove(id: string) {
     return this.prismaService.category.delete({
       where: {
         id,
