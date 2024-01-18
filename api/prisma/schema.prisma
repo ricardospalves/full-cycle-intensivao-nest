@@ -11,8 +11,17 @@ datasource db {
 }
 
 model Category {
-  id String @id
-  name String
+  id          String  @id
+  name        String
   description String?
+  Video       Video[]
+}
 
+model Video {
+  id          String   @id
+  title       String
+  description String?
+  file_path   String
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id String
 }
