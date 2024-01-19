@@ -9,12 +9,16 @@ import {
   UploadedFile,
   ParseFilePipe,
   UseInterceptors,
+  Res,
 } from '@nestjs/common';
 import { VideosService } from './videos.service';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
 import { VideoFileValidator } from './video.file-validator';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { createReadStream } from 'node:fs';
+import { join } from 'node:path';
+import { Response } from 'express';
 
 @Controller('videos')
 export class VideosController {
@@ -61,5 +65,12 @@ export class VideosController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.videosService.remove(id);
+  }
+
+  @Get('file/:file')
+  file(@Param('file') file: string, @Res() response: Response) {
+    const fileStream = createReadStream(join(process.cwd(), 'upload', file));
+
+    fileStream.pipe(response);
   }
 }
